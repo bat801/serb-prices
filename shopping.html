@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Список покупок — Цены в Сербии</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__emoji">🇷🇸</span>
+        <span>Цены в Сербии</span>
+      </a>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="index.html">📊 База</a>
+        <a href="shopping.html" class="is-active">🛒 Список покупок</a>
+        <a href="admin.html">⚙️ Админка</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <div>
+        <h1>🛒 Список покупок</h1>
+        <p class="muted">Общий список — любой может добавлять и редактировать.</p>
+      </div>
+      <button id="refresh-btn" class="btn" type="button">🔄 Обновить</button>
+    </div>
+
+    <div class="section">
+      <form id="add-form" class="row">
+        <label class="sr-only" for="new-item">Новый пункт</label>
+        <input id="new-item" class="input" type="text" placeholder="молоко 1 шт" autocomplete="off" style="flex:1 1 220px;" />
+        <button class="btn btn-primary" type="submit">➕ Добавить</button>
+      </form>
+
+      <div class="row-between mt-16 mb-16">
+        <span id="status-text" class="muted small"></span>
+        <button id="clear-done" class="btn btn-danger btn-sm" type="button">🧹 Очистить купленное</button>
+      </div>
+
+      <ul id="list" class="shop-list" aria-live="polite"></ul>
+      <div id="empty" class="empty hidden">
+        <span class="empty__emoji">🛒</span>
+        <p>Список пуст. Добавь что-нибудь.</p>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast-root" class="toast-root"></div>
+  <script type="module" src="js/shopping.js"></script>
+</body>
+</html>

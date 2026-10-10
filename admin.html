@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Админка — Цены в Сербии</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__emoji">🇷🇸</span>
+        <span>Цены в Сербии</span>
+      </a>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="index.html">📊 База</a>
+        <a href="shopping.html">🛒 Список покупок</a>
+        <a href="admin.html" class="is-active">⚙️ Админка</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Экран пароля -->
+    <section id="login-screen" class="login-screen">
+      <div class="login-emoji">🔒</div>
+      <h1>Вход в админку</h1>
+      <p class="muted small">Введи пароль, чтобы редактировать базу цен.</p>
+      <form id="login-form">
+        <label class="sr-only" for="login-password">Пароль</label>
+        <input id="login-password" class="input" type="password" placeholder="Пароль" autocomplete="current-password" />
+        <button class="btn btn-primary" type="submit">Войти</button>
+      </form>
+    </section>
+
+    <!-- Приложение админки -->
+    <section id="admin-app" class="hidden">
+      <div class="page-header">
+        <div>
+          <h1>⚙️ Админка</h1>
+          <p class="muted">Управление базой товаров, магазинами и категориями.</p>
+        </div>
+        <button id="logout-btn" class="btn btn-ghost" type="button">🚪 Выйти</button>
+      </div>
+
+      <!-- Форма товара -->
+      <div class="section" id="form-section">
+        <div class="section__title">
+          <h2 id="form-title">➕ Добавить товар</h2>
+          <button id="cancel-edit" class="btn btn-ghost btn-sm hidden" type="button">Отмена</button>
+        </div>
+        <form id="product-form">
+          <input type="hidden" id="product-id" />
+          <div class="form-grid">
+            <div class="field">
+              <label for="p-name">Название *</label>
+              <input id="p-name" class="input" type="text" required placeholder="Масло сливочное" />
+            </div>
+            <div class="field">
+              <label for="p-brand">Бренд</label>
+              <input id="p-brand" class="input" type="text" list="brand-list" placeholder="Моя Кравица" />
+              <datalist id="brand-list"></datalist>
+            </div>
+            <div class="field">
+              <label for="p-category">Категория</label>
+              <input id="p-category" class="input" type="text" list="category-list" placeholder="Молочное" />
+              <datalist id="category-list"></datalist>
+            </div>
+            <div class="field">
+              <label for="p-store">Магазин *</label>
+              <input id="p-store" class="input" type="text" list="store-list" required placeholder="Maxi" />
+              <datalist id="store-list"></datalist>
+            </div>
+            <div class="field">
+              <label for="p-price">Цена, RSD *</label>
+              <input id="p-price" class="input" type="number" step="0.01" min="0" required placeholder="159.99" />
+            </div>
+            <div class="field">
+              <label for="p-eur">Цена в EUR</label>
+              <input id="p-eur" class="input" type="text" readonly placeholder="—" />
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label for="p-comment">Комментарий</label>
+              <textarea id="p-comment" class="textarea" rows="2" placeholder="200 г, ~600 RSD/кг"></textarea>
+            </div>
+          </div>
+          <div class="row mt-16">
+            <button class="btn btn-primary" type="submit">💾 Сохранить</button>
+            <span id="form-hint" class="muted small"></span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Таблица товаров -->
+      <div class="section">
+        <div class="section__title">
+          <h2>📋 Товары</h2>
+        </div>
+        <div class="toolbar">
+          <button id="add-btn" class="btn btn-primary" type="button">➕ Добавить товар</button>
+          <button id="export-json" class="btn" type="button">⬇️ Экспорт JSON</button>
+          <button id="export-csv" class="btn" type="button">⬇️ Экспорт CSV</button>
+          <label class="btn" for="import-file">📥 Импорт JSON</label>
+          <input id="import-file" type="file" accept="application/json" class="hidden" />
+        </div>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Название</th>
+                <th>Бренд</th>
+                <th>Категория</th>
+                <th>Магазин</th>
+                <th class="num">RSD</th>
+                <th class="num">EUR</th>
+                <th>Комментарий</th>
+                <th class="actions">Действия</th>
+              </tr>
+            </thead>
+            <tbody id="products-body"></tbody>
+          </table>
+        </div>
+        <div id="products-empty" class="empty hidden mt-16">
+          <span class="empty__emoji">📭</span>
+          <p>Товаров пока нет. Добавь первый выше.</p>
+        </div>
+      </div>
+
+      <!-- Магазины -->
+      <div class="section">
+        <div class="section__title"><h2>🏪 Магазины</h2></div>
+        <form id="store-form" class="row">
+          <label class="sr-only" for="store-name">Новый магазин</label>
+          <input id="store-name" class="input" type="text" placeholder="Название магазина" style="flex:1 1 200px;" />
+          <button class="btn btn-primary" type="submit">Добавить</button>
+        </form>
+        <ul id="stores-list" class="row mt-16" style="gap:8px;"></ul>
+      </div>
+
+      <!-- Категории -->
+      <div class="section">
+        <div class="section__title"><h2>🏷️ Категории</h2></div>
+        <form id="category-form" class="row">
+          <label class="sr-only" for="category-name">Новая категория</label>
+          <input id="category-name" class="input" type="text" placeholder="Название категории" style="flex:1 1 200px;" />
+          <button class="btn btn-primary" type="submit">Добавить</button>
+        </form>
+        <ul id="categories-list" class="row mt-16" style="gap:8px;"></ul>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast-root" class="toast-root"></div>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

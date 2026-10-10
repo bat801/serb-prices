@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>База цен в Сербии</title>
+  <meta name="description" content="Личная база цен на товары в магазинах Сербии" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__emoji">🇷🇸</span>
+        <span>Цены в Сербии</span>
+      </a>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="index.html" class="is-active">📊 База</a>
+        <a href="shopping.html">🛒 Список покупок</a>
+        <a href="admin.html">⚙️ Админка</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <div>
+        <h1>📊 База цен</h1>
+        <p class="muted">Смотри, что где дешевле — прямо в магазине.</p>
+      </div>
+      <button id="refresh-btn" class="btn" type="button">🔄 Обновить</button>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <label class="sr-only" for="search">Поиск</label>
+        <input id="search" class="input" type="search" placeholder="Поиск: название, бренд, магазин…" autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="filters">
+      <label class="sr-only" for="filter-store">Магазин</label>
+      <select id="filter-store" class="select">
+        <option value="">Все магазины</option>
+      </select>
+      <label class="sr-only" for="filter-category">Категория</label>
+      <select id="filter-category" class="select">
+        <option value="">Все категории</option>
+      </select>
+    </div>
+
+    <div class="status-line">
+      <span id="status-dot" class="dot"></span>
+      <span id="status-text">Загрузка…</span>
+    </div>
+
+    <section id="cards" class="cards" aria-live="polite"></section>
+    <div id="empty" class="empty hidden">
+      <span class="empty__emoji">📭</span>
+      <p>Пока ничего нет. Добавь товары в админке.</p>
+    </div>
+  </main>
+
+  <div id="toast-root" class="toast-root"></div>
+  <script type="module" src="js/index.js"></script>
+</body>
+</html>
